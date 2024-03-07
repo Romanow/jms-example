@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: jpa-example
+  profiles:
+    active: local
+  main.banner-mode: off
+  jms:
+    listener:
+      acknowledge-mode: auto
+      concurrency: 1
+      max-concurrency: 1
+    pub-sub-domain: false
+    template:
+      default-destination:
+      delivery-mode: non_persistent
+      qos-enabled: true
+      priority: 100
+      receive-timeout: 1000
+      time-to-live: 36000
+
+application:
+  artemis:
+    username: ${ARTEMIS_USERNAME:test}
+    password: ${ARTEMIS_PASSWORD:test}
+    broker-url: ${ARTEMIS_BROKER_URL:amqp://localhost:61616}
