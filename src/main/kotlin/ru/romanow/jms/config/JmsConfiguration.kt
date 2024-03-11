@@ -13,7 +13,6 @@ import org.springframework.jms.config.JmsListenerContainerFactory
 import org.springframework.jms.connection.CachingConnectionFactory
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.listener.DefaultMessageListenerContainer
-import org.springframework.util.ErrorHandler
 import ru.romanow.jms.config.properties.ArtemisProperties
 
 @EnableJms
@@ -44,10 +43,7 @@ class JmsConfiguration {
         val listenerContainerFactory = DefaultJmsListenerContainerFactory()
         configurer.configure(listenerContainerFactory, connectionFactory)
         listenerContainerFactory.setSessionTransacted(false)
-        listenerContainerFactory.setErrorHandler(jmsErrorHandler())
+        listenerContainerFactory.setErrorHandler { logger.error("", it) }
         return listenerContainerFactory
     }
-
-    @Bean
-    fun jmsErrorHandler() = ErrorHandler { logger.error("", it) }
 }

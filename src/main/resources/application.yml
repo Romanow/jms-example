@@ -8,7 +8,7 @@ spring:
     listener:
       acknowledge-mode: auto
       concurrency: 1
-      max-concurrency: 1
+      max-concurrency: 4
     pub-sub-domain: false
     template:
       default-destination:
@@ -23,3 +23,7 @@ application:
     username: ${ARTEMIS_USERNAME:test}
     password: ${ARTEMIS_PASSWORD:test}
     broker-url: ${ARTEMIS_BROKER_URL:amqp://localhost:61616}
+logging:
+  level:
+    org.apache.qpid: debug
+    org.springframework.jms: debug

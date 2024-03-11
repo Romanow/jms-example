@@ -1,25 +1,22 @@
 package ru.romanow.jms.service
 
+import org.apache.activemq.artemis.jms.client.ActiveMQQueue
+import org.apache.qpid.jms.message.JmsTextMessage
 import org.slf4j.LoggerFactory
 import org.springframework.jms.annotation.JmsListener
-import org.springframework.jms.core.JmsTemplate
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
+import javax.jms.Session
 
 @Service
-class MessageService(
-    private val jmsTemplate: JmsTemplate
-) {
+class MessageService {
     private final val logger = LoggerFactory.getLogger(MessageService::class.java)
 
     @JmsListener(destination = "queues.in")
-    fun inListener(@Payload message: String) {
+    fun inListener(message: JmsTextMessage, session: Session) {
         logger.info("Receive message '$message' from 'queues.in'")
-        jmsTemplate.convertAndSend("queues.out", message)
+        session
+            .createProducer(ActiveMQQueue("queues.out"))
+            .send(session.createTextMessage(message.text))
         logger.info("Send echo message '$message' to 'queues.out'")
-
-        logger.info("Sleep for 3 seconds")
-        Thread.sleep(3000)
-        logger.info("Finished")
     }
 }
