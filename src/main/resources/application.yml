@@ -4,19 +4,26 @@ spring:
   profiles:
     active: local
   main.banner-mode: off
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jms
+    username: program
+    password: test
+    driver-class-name: org.postgresql.Driver
   jms:
     listener:
       acknowledge-mode: auto
       concurrency: 1
-      max-concurrency: 4
+      max-concurrency: 1
     pub-sub-domain: false
     template:
-      default-destination:
-      delivery-mode: non_persistent
       qos-enabled: true
       priority: 100
       receive-timeout: 1000
       time-to-live: 36000
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
 
 application:
   artemis:
