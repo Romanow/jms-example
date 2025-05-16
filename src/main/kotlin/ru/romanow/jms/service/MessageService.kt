@@ -1,6 +1,7 @@
 package ru.romanow.jms.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.jms.Session
 import org.apache.qpid.jms.message.JmsTextMessage
 import org.slf4j.LoggerFactory
 import org.springframework.jms.annotation.JmsListener
@@ -10,7 +11,6 @@ import ru.romanow.jms.models.UserChangeRequest
 import ru.romanow.jms.utils.CHANGE_LOGIN_REQUEST_QUEUE
 import ru.romanow.jms.utils.CHANGE_NAME_REQUEST_QUEUE
 import ru.romanow.jms.utils.RESPONSE_QUEUE
-import javax.jms.Session
 
 @Service
 class MessageService(

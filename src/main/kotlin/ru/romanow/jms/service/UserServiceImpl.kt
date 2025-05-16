@@ -1,10 +1,10 @@
 package ru.romanow.jms.service
 
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.romanow.jms.models.UserResponse
 import ru.romanow.jms.repository.UserRepository
-import javax.persistence.EntityNotFoundException
 
 @Service
 class UserServiceImpl(

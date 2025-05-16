@@ -9,21 +9,11 @@ spring:
     username: program
     password: test
     driver-class-name: org.postgresql.Driver
-  jms:
-    listener:
-      acknowledge-mode: auto
-      concurrency: 1
-      max-concurrency: 1
-    pub-sub-domain: false
-    template:
-      qos-enabled: true
-      priority: 100
-      receive-timeout: 1000
-      time-to-live: 36000
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+    open-in-view: false
 
 application:
   artemis:
@@ -34,3 +24,5 @@ logging:
   level:
     org.apache.qpid: debug
     org.springframework.jms: debug
+    org.springframework.orm.jpa: debug
+    org.springframework.transaction: debug

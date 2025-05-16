@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.context.annotation.Import
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.jms.core.JmsTemplate
@@ -26,7 +27,7 @@ import java.time.Duration.ofSeconds
 import java.util.concurrent.atomic.AtomicInteger
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import(value = [DatabaseTestConfiguration::class, ArtemisTestConfiguration::class])
 class JmsTransactionalApplicationTest {
     private final val logger = LoggerFactory.getLogger(JmsTransactionalApplicationTest::class.java)
@@ -52,6 +53,8 @@ class JmsTransactionalApplicationTest {
         var request = UserChangeRequest(id = USER_ID, value = "Alexey")
         logger.info("Send request to change name to '${request.value}' to '$CHANGE_NAME_REQUEST_QUEUE'")
         jmsTemplate.convertAndSend(CHANGE_NAME_REQUEST_QUEUE, objectMapper.writeValueAsString(request))
+
+        await().atMost(ofSeconds(2)).pollDelay(ofMillis(100)).until { counter.get() == 1 }
 
         request = UserChangeRequest(id = USER_ID, value = "ronin")
         logger.info("Send request to change login to '${request.value}' to '$CHANGE_LOGIN_REQUEST_QUEUE'")
