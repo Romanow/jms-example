@@ -1,5 +1,5 @@
 package ru.romanow.jms.utils
 
-const val CHANGE_NAME_REQUEST_QUEUE = "queues.request.change-name"
-const val CHANGE_LOGIN_REQUEST_QUEUE = "queues.request.change-login"
+const val DROP_TABLE_REQUEST_QUEUE = "queues.request.drop-table"
+const val FIND_ALL_REQUEST_QUEUE = "queues.request.find-all"
 const val RESPONSE_QUEUE = "queues.response"

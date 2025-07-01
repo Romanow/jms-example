@@ -21,7 +21,7 @@ idea {
     }
 }
 
-[compileKotlin, compileTestKotlin]*.kotlinOptions*.jvmTarget = "21"
+[compileKotlin, compileTestKotlin]*.kotlinOptions*.jvmTarget = "17"
 
 dependencyManagement {
     imports {

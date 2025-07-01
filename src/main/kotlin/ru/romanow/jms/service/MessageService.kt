@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
-import ru.romanow.jms.models.UserChangeRequest
-import ru.romanow.jms.utils.CHANGE_LOGIN_REQUEST_QUEUE
-import ru.romanow.jms.utils.CHANGE_NAME_REQUEST_QUEUE
+import ru.romanow.jms.models.TableInfoRequest
+import ru.romanow.jms.utils.DROP_TABLE_REQUEST_QUEUE
+import ru.romanow.jms.utils.FIND_ALL_REQUEST_QUEUE
 import ru.romanow.jms.utils.RESPONSE_QUEUE
 
 @Service
@@ -20,25 +20,25 @@ class MessageService(
 ) {
     private final val logger = LoggerFactory.getLogger(MessageService::class.java)
 
-    @JmsListener(destination = CHANGE_NAME_REQUEST_QUEUE)
-    fun changeNameListener(message: JmsTextMessage, session: Session) {
-        logger.info("Receive message '$message' from '$CHANGE_NAME_REQUEST_QUEUE'")
-        val request = objectMapper.readValue(message.text, UserChangeRequest::class.java)
+    @JmsListener(destination = DROP_TABLE_REQUEST_QUEUE)
+    fun dropTable(message: JmsTextMessage, session: Session) {
+        logger.info("Receive message '$message' from '$DROP_TABLE_REQUEST_QUEUE'")
+        val request = objectMapper.readValue(message.text, TableInfoRequest::class.java)
 
-        userService.updateName(request.id, request.value)
+        userService.dropTable(request.tableName)
 
         jmsTemplate.convertAndSend(RESPONSE_QUEUE, "success")
         logger.info("Send echo message '$message' to '$RESPONSE_QUEUE'")
     }
 
-    @JmsListener(destination = CHANGE_LOGIN_REQUEST_QUEUE)
+    @JmsListener(destination = FIND_ALL_REQUEST_QUEUE)
     fun changeLoginListener(message: JmsTextMessage, session: Session) {
-        logger.info("Receive message '$message' from '$CHANGE_LOGIN_REQUEST_QUEUE'")
-        val request = objectMapper.readValue(message.text, UserChangeRequest::class.java)
+        logger.info("Receive message '$message' from '$FIND_ALL_REQUEST_QUEUE'")
+        val request = objectMapper.readValue(message.text, TableInfoRequest::class.java)
 
-        userService.updateLogin(request.id, request.value)
+        val response = userService.findAll(request.tableName).toString()
 
-        jmsTemplate.convertAndSend(RESPONSE_QUEUE, "success")
+        jmsTemplate.convertAndSend(RESPONSE_QUEUE, response)
         logger.info("Send echo message '$message' to '$RESPONSE_QUEUE'")
     }
 }

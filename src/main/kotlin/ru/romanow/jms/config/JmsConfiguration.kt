@@ -42,7 +42,6 @@ class JmsConfiguration {
     ): JmsListenerContainerFactory<DefaultMessageListenerContainer> {
         val listenerContainerFactory = DefaultJmsListenerContainerFactory()
         configurer.configure(listenerContainerFactory, connectionFactory)
-        listenerContainerFactory.setSessionTransacted(false)
         listenerContainerFactory.setErrorHandler { logger.error("", it) }
         return listenerContainerFactory
     }
