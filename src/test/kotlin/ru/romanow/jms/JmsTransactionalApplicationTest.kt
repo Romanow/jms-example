@@ -59,7 +59,7 @@ class JmsTransactionalApplicationTest {
     fun test() {
         val request = TableInfoRequest("users-$REQUEST_UID")
         logger.info("Send request to drop table '${request.tableName}' to '$DROP_TABLE_REQUEST_QUEUE'")
-//        jmsTemplate.convertAndSend(DROP_TABLE_REQUEST_QUEUE, objectMapper.writeValueAsString(request))
+        jmsTemplate.convertAndSend(DROP_TABLE_REQUEST_QUEUE, objectMapper.writeValueAsString(request))
 
         Thread.sleep(100)
 
